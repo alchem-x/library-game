@@ -148,16 +148,10 @@ function showScene(sceneKey) {
             const button = document.createElement('button');
             const isSelected = gameState.selectedChoices.has(choice.action);
             
-            button.className = `choice-btn ${isSelected ? 'selected' : ''}`;
+            button.className = `choice-btn ${isSelected ? 'used' : ''}`;
             button.textContent = choice.text;
             button.style.animationDelay = `${index * 0.1}s`;
-            
-            if (isSelected) {
-                button.disabled = true;
-                button.title = '已选择过此选项';
-            } else {
-                button.onclick = () => handleChoice(choice.action);
-            }
+            button.onclick = () => handleChoice(choice.action);
             
             choices.appendChild(button);
         });
@@ -287,11 +281,6 @@ function init() {
     if (savedEndings) {
         gameState.discoveredEndings = new Set(JSON.parse(savedEndings));
         updateGallery();
-    }
-    
-    const savedChoices = localStorage.getItem('selectedChoices');
-    if (savedChoices) {
-        gameState.selectedChoices = new Set(JSON.parse(savedChoices));
     }
     
 }
