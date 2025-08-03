@@ -5,7 +5,7 @@ const gameData = {
     endings: [],
     story: {
         intro: {
-            text: "📚 复旦图书馆的午后，阳光透过落地窗洒在书桌上...\n\n👀 你注意到对面坐着一个女生，她的手放在下面，时不时动一下...\n\n💭 你的心跳突然加快，大脑开始飞速运转...",
+            text: "📚 图书馆的午后，阳光透过落地窗洒在书桌上...\n\n👀 你注意到对面坐着一个女生，她的手放在下面，时不时动一下...\n\n💭 你的心跳突然加快，大脑开始飞速运转...",
             choices: [
                 { text: "🚪 立刻离开图书馆", action: "ending1" },
                 { text: "🤝 礼貌询问是否需要帮助", action: "ending2" },
@@ -148,7 +148,8 @@ function switchScreen(screenId) {
 // 游戏状态
 let gameState = {
     currentScene: 0,
-    discoveredEndings: new Set()
+    discoveredEndings: new Set(),
+    selectedChoices: new Set()
 };
 
 // 开始游戏
@@ -176,10 +177,19 @@ function showScene(sceneKey) {
         choices.innerHTML = '';
         scene.choices.forEach((choice, index) => {
             const button = document.createElement('button');
-            button.className = 'choice-btn';
+            const isSelected = gameState.selectedChoices.has(choice.action);
+            
+            button.className = `choice-btn ${isSelected ? 'selected' : ''}`;
             button.textContent = choice.text;
             button.style.animationDelay = `${index * 0.1}s`;
-            button.onclick = () => handleChoice(choice.action);
+            
+            if (isSelected) {
+                button.disabled = true;
+                button.title = '已选择过此选项';
+            } else {
+                button.onclick = () => handleChoice(choice.action);
+            }
+            
             choices.appendChild(button);
         });
         
@@ -190,6 +200,10 @@ function showScene(sceneKey) {
 // 处理选择
 function handleChoice(action) {
     playSound('success');
+    
+    // 记录已选择的选项
+    gameState.selectedChoices.add(action);
+    localStorage.setItem('selectedChoices', JSON.stringify([...gameState.selectedChoices]));
     
     if (action.startsWith('ending')) {
         showEnding(action);
@@ -314,6 +328,11 @@ function init() {
     if (savedEndings) {
         gameState.discoveredEndings = new Set(JSON.parse(savedEndings));
         updateGallery();
+    }
+    
+    const savedChoices = localStorage.getItem('selectedChoices');
+    if (savedChoices) {
+        gameState.selectedChoices = new Set(JSON.parse(savedChoices));
     }
     
     const savedSound = localStorage.getItem('soundEnabled');
