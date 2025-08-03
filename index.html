@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚复旦图书馆生存模拟器📱</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="一个关于性别凝视与社交困境的文字冒险游戏">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 开始界面 -->
+        <div id="start-screen" class="screen active">
+            <div class="title-section">
+                <h1 class="game-title">
+                    <span class="title-emoji">📚</span>
+                    复旦图书馆生存模拟器
+                    <span class="title-emoji">📱</span>
+                </h1>
+                <p class="subtitle">👀 性别凝视 · 🎭 社交困境 · 🎪 黑色幽默</p>
+            </div>
+            
+            <div class="intro-card">
+                <div class="story-intro">
+                    <p>🎓 <strong>你是复旦大学的一名男学生</strong></p>
+                    <p>📖 在安静的图书馆里，你注意到...</p>
+                    <p>👩‍🎓 <em>一个女生坐在对面，她的手放在下面，时不时动一下</em></p>
+                    <p>🤔 你的每一个选择，都将导向不同的结局...</p>
+                </div>
+            </div>
+            
+            <button class="start-btn" onclick="startGame()">
+                <span class="btn-emoji">🚀</span>
+                开始冒险
+                <span class="btn-emoji">🎯</span>
+            </button>
+            
+            <div class="warning">
+                ⚠️ 本游戏包含黑色幽默元素，请理性游玩
+            </div>
+        </div>
+
+        <!-- 游戏主界面 -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="stats">
+                    <span>📱 手机版</span>
+                    <span>🎭 第 <span id="current-stage">1</span> 幕</span>
+                </div>
+            </div>
+
+            <div class="scene-container">
+                <div class="scene-bg"></div>
+                <div class="character-area">
+                    <div class="character student">👨‍🎓</div>
+                    <div class="character girl">👩‍🎓</div>
+                </div>
+                <div class="library-bg">
+                    <div class="book">📕</div>
+                    <div class="book">📗</div>
+                    <div class="book">📘</div>
+                    <div class="book">📙</div>
+                </div>
+            </div>
+
+            <div class="story-box">
+                <div class="story-text" id="story-text">
+                    故事即将开始...
+                </div>
+                <div class="choices" id="choices">
+                    <!-- 选择按钮将在这里动态生成 -->
+                </div>
+            </div>
+
+            <div class="sound-controls">
+                <button class="sound-btn" onclick="toggleSound()" title="音效开关">
+                    <span id="sound-icon">🔊</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 结局界面 -->
+        <div id="ending-screen" class="screen">
+            <div class="ending-content">
+                <div class="ending-title" id="ending-title">
+                    结局解锁！
+                </div>
+                <div class="ending-card">
+                    <div class="ending-emoji" id="ending-emoji">🏆</div>
+                    <div class="ending-name" id="ending-name"></div>
+                    <div class="ending-story" id="ending-story"></div>
+                </div>
+                
+                <div class="ending-actions">
+                    <button class="restart-btn" onclick="restartGame()">
+                        <span class="btn-emoji">🔄</span>
+                        重新开始
+                    </button>
+                    <button class="gallery-btn" onclick="showGallery()">
+                        <span class="btn-emoji">🏛️</span>
+                        结局图鉴
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结局图鉴 -->
+        <div id="gallery-screen" class="screen">
+            <div class="gallery-header">
+                <h2>🏛️ 结局图鉴</h2>
+                <button class="close-btn" onclick="closeGallery()">✖️</button>
+            </div>
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- 结局卡片将在这里动态生成 -->
+            </div>
+        </div>
+
+        <!-- 加载动画 -->
+        <div id="loading-screen" class="screen">
+            <div class="loading-content">
+                <div class="loading-spinner">📚</div>
+                <p>正在加载图书馆场景...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
