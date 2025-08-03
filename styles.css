@@ -146,12 +146,10 @@ body {
 .start-actions {
     display: flex;
     flex-direction: column;
-    gap: 15px;
     margin-top: 30px;
 }
 
 .start-actions .gallery-btn {
-    margin-top: 0;
     background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
 }
 
