@@ -31,11 +31,19 @@
                 </div>
             </div>
             
-            <button class="start-btn" onclick="startGame()">
-                <span class="btn-emoji">🚀</span>
-                开始冒险
-                <span class="btn-emoji">🎯</span>
-            </button>
+            <div class="start-actions">
+                <button class="start-btn" onclick="startGame()">
+                    <span class="btn-emoji">🚀</span>
+                    开始冒险
+                    <span class="btn-emoji">🎯</span>
+                </button>
+                
+                <button class="gallery-btn" onclick="showGallery()" style="margin-top: 15px; background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);">
+                    <span class="btn-emoji">🏛️</span>
+                    结局图鉴
+                    <span class="btn-emoji">📊</span>
+                </button>
+            </div>
         </div>
 
         <!-- 游戏主界面 -->
@@ -73,11 +81,6 @@
                 </div>
             </div>
 
-            <div class="sound-controls">
-                <button class="sound-btn" onclick="toggleSound()" title="音效开关">
-                    <span id="sound-icon">🔊</span>
-                </button>
-            </div>
         </div>
 
         <!-- 结局界面 -->

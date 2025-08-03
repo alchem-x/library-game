@@ -91,36 +91,6 @@ const gameData = {
     }
 };
 
-// 音效系统
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-function playSound(type) {
-    if (!gameData.soundEnabled) return;
-    
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    switch(type) {
-        case 'click':
-            oscillator.frequency.value = 800;
-            gainNode.gain.value = 0.1;
-            break;
-        case 'success':
-            oscillator.frequency.value = 1200;
-            gainNode.gain.value = 0.15;
-            break;
-        case 'ending':
-            oscillator.frequency.value = 600;
-            gainNode.gain.value = 0.2;
-            break;
-    }
-    
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.1);
-}
 
 // 粒子效果
 function createParticles(element) {
@@ -142,7 +112,6 @@ function switchScreen(screenId) {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(screen => screen.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
-    playSound('click');
 }
 
 // 游戏状态
@@ -199,8 +168,6 @@ function showScene(sceneKey) {
 
 // 处理选择
 function handleChoice(action) {
-    playSound('success');
-    
     // 记录已选择的选项
     gameState.selectedChoices.add(action);
     localStorage.setItem('selectedChoices', JSON.stringify([...gameState.selectedChoices]));
@@ -225,7 +192,6 @@ function showEnding(endingKey) {
     document.getElementById('ending-title').style.color = ending.color;
     
     switchScreen('ending-screen');
-    playSound('ending');
     createParticles(document.querySelector('.ending-content'));
     
     // 保存进度到本地存储
@@ -281,13 +247,6 @@ function updateProgress() {
     document.getElementById('current-stage').textContent = gameState.discoveredEndings.size + 1;
 }
 
-// 音效开关
-function toggleSound() {
-    gameData.soundEnabled = !gameData.soundEnabled;
-    const icon = document.getElementById('sound-icon');
-    icon.textContent = gameData.soundEnabled ? '🔊' : '🔇';
-    localStorage.setItem('soundEnabled', gameData.soundEnabled);
-}
 
 // 键盘导航
 document.addEventListener('keydown', (e) => {
@@ -335,27 +294,6 @@ function init() {
         gameState.selectedChoices = new Set(JSON.parse(savedChoices));
     }
     
-    const savedSound = localStorage.getItem('soundEnabled');
-    if (savedSound !== null) {
-        gameData.soundEnabled = savedSound === 'true';
-        document.getElementById('sound-icon').textContent = gameData.soundEnabled ? '🔊' : '🔇';
-    }
-    
-    // 隐藏加载屏幕
-    setTimeout(() => {
-        document.getElementById('loading-screen').style.display = 'none';
-    }, 1000);
-    
-    // 添加页面可见性检测
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            // 页面隐藏时暂停音频
-            audioContext.suspend();
-        } else {
-            // 页面显示时恢复音频
-            audioContext.resume();
-        }
-    });
 }
 
 // 页面加载完成后初始化
